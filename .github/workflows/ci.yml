@@ -15,14 +15,14 @@ jobs:
       - name: Run Fluid Attacks SAST Scanner
         run: |
           docker pull fluidattacks/sast:latest
-          docker run --rm -v ${{ github.workspace }}:/app fluidattacks/sast:latest sast scan /app/fluid-config.yaml
+          docker run --rm -v ${{ github.workspace }}:/app fluidattacks/sast:latest sast scan /app/fluid-sast-config.yaml
 
       - name: Upload SAST Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: sast-scan-results
-          path: scan-results.csv
+          path: sast-results.csv
 
   sca-scan:
     runs-on: ubuntu-latest
@@ -34,14 +34,14 @@ jobs:
       - name: Run Fluid Attacks SCA Scanner
         run: |
           docker pull fluidattacks/sca:latest
-          docker run --rm -v ${{ github.workspace }}:/app fluidattacks/sca:latest sca scan /app/fluid-config.yaml
+          docker run --rm -v ${{ github.workspace }}:/app fluidattacks/sca:latest sca scan /app/fluid-sca-config.yaml
 
       - name: Upload SCA Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: sca-scan-results
-          path: scan-results.csv
+          path: sca-results.csv
 
   sonarcloud-scan:
     runs-on: ubuntu-latest
@@ -57,10 +57,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=QuitoTactico_WackoPicko
-            -Dsonar.organization=quitotactico
 
   docker-build-push:
     runs-on: ubuntu-latest

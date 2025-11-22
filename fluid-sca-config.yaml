@@ -5,6 +5,7 @@ output:
   format: CSV
 working_dir: /app
 language: EN
+strict: true
 
 sca:
   include:
