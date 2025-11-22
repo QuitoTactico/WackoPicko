@@ -1,0 +1,13 @@
+# Fluid Attacks SCA Scanner Configuration for WackoPicko
+namespace: wackopicko
+output:
+  file_path: /app/sca-results.csv
+  format: CSV
+working_dir: /app
+language: EN
+
+sca:
+  include:
+    - .
+  exclude:
+    - glob(**/upload/**)
