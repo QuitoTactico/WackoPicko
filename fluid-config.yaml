@@ -1,0 +1,30 @@
+# Fluid Attacks Scanner Configuration for WackoPicko
+namespace: wackopicko
+working_dir: /app
+
+sast:
+  # Include all PHP files for Static Application Security Testing
+  include:
+    - "**/*.php"
+    - "**/*.js"
+    - "**/*.sql"
+  
+  # Exclude vendor directories and uploads
+  exclude:
+    - "upload/**"
+    - "**/node_modules/**"
+    - "**/vendor/**"
+
+sca:
+  # Software Composition Analysis - check for vulnerable dependencies
+  include:
+    - "**/composer.json"
+    - "**/package.json"
+  
+  exclude:
+    - "upload/**"
+
+# Output configuration
+output:
+  format: CSV_FILE
+  file_path: /app/scan-results.csv
