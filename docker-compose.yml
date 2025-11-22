@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=wackopicko
+      - MYSQL_PASSWORD=webvuln!@#
+      - MYSQL_DATABASE=wackopicko
+    volumes:
+      - ./website:/var/www/html
+    networks:
+      - wackopicko-network
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+    volumes:
+      - ./current.sql:/docker-entrypoint-initdb.d/current.sql
+      - db-data:/var/lib/mysql
+    networks:
+      - wackopicko-network
+
+volumes:
+  db-data:
+
+networks:
+  wackopicko-network:
+    driver: bridge

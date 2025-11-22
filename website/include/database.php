@@ -5,14 +5,18 @@ class DB
    
    function __construct($server, $user_name, $pass, $db)
    {
-      $this->conn = mysql_connect($server, $user_name, $pass);
-      mysql_select_db($db, $this->conn);
-      mysql_set_charset('utf8');
+      $this->conn = mysqli_connect($server, $user_name, $pass, $db);
+      if (!$this->conn) {
+         die("Connection failed: " . mysqli_connect_error());
+      }
+      mysqli_set_charset($this->conn, 'utf8');
    }
 
    function __destruct()
    {
-      mysql_close($this->conn);
+      if ($this->conn) {
+         mysqli_close($this->conn);
+      }
    }
 }
 ?>
