@@ -1,15 +1,30 @@
-FROM tutum/lamp
-MAINTAINER Adam Doupe <adamdoupe@gmail.com>
+FROM php:7.4-apache
+LABEL maintainer="Adam Doupe <adamdoupe@gmail.com>"
 
-RUN apt-get update && apt-get install -y libgd-dev php5-gd
-RUN rm -fr /app
-COPY website /app
-RUN chmod 777 /app/upload
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libgd-dev \
+    default-mysql-client \
+    && docker-php-ext-install gd mysqli \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY current.sql .
-ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
-ADD php.ini /etc/php5/apache2/php.ini
-ADD php.ini /etc/php5/cli/php.ini
-RUN sed -i 's/150/250/g' /etc/apache2/mods-available/mpm_worker.conf
-RUN sed -i 's/150/250/g' /etc/apache2/mods-available/mpm_prefork.conf
+# Copy application files
+RUN rm -fr /var/www/html
+COPY website /var/www/html
+RUN chmod 777 /var/www/html/upload
+
+# Copy configuration files
+COPY current.sql /docker-entrypoint-initdb.d/
+COPY create_mysql_admin_user.sh /create_mysql_admin_user.sh
+COPY php.ini /usr/local/etc/php/php.ini
 RUN chmod 755 /*.sh
+
+# Enable Apache modules
+RUN a2enmod rewrite
+
+# Expose port 80
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
