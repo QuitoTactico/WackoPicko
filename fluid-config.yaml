@@ -8,13 +8,13 @@ language: EN
 
 sast:
   include:
-    - /app
+    - .
   exclude:
     - glob(**/upload/**)
     - glob(**/node_modules/**)
 
 sca:
   include:
-    - /app
+    - .
   exclude:
     - glob(**/upload/**)
