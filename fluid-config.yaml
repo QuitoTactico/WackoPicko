@@ -1,20 +1,20 @@
 # Fluid Attacks Scanner Configuration for WackoPicko
 namespace: wackopicko
 output:
-  file_path: ./scan-results.csv
+  file_path: /app/scan-results.csv
   format: CSV
-working_dir: .
+working_dir: /app
 language: EN
 
 sast:
   include:
-  - .
+    - /app
   exclude:
-  - glob(**/upload/**)
-  - glob(**/node_modules/**)
+    - glob(**/upload/**)
+    - glob(**/node_modules/**)
 
 sca:
   include:
-  - .
+    - /app
   exclude:
-  - glob(**/upload/**)
+    - glob(**/upload/**)
