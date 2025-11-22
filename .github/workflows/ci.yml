@@ -47,7 +47,7 @@ jobs:
           path: sca-results.csv
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-scan-action@v2.0.2
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
