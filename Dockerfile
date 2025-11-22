@@ -1,13 +1,17 @@
 FROM php:7.4-apache
 LABEL maintainer="Adam Doupe <adamdoupe@gmail.com>"
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    libgd-dev \
-    default-mysql-client \
-    && docker-php-ext-install gd mysqli \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install dependencies with retry logic
+RUN apt-get update && \
+    (apt-get install -y \
+        libgd-dev \
+        default-mysql-client \
+    || (sleep 10 && apt-get update && apt-get install -y \
+        libgd-dev \
+        default-mysql-client)) && \
+    docker-php-ext-install gd mysqli && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy application files
 RUN rm -fr /var/www/html
