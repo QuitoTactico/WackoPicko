@@ -1,0 +1,14 @@
+# Fluid Attacks SAST Scanner Configuration for WackoPicko
+namespace: wackopicko
+output:
+  file_path: /app/sast-results.csv
+  format: CSV
+working_dir: /app
+language: EN
+
+sast:
+  include:
+    - .
+  exclude:
+    - glob(**/upload/**)
+    - glob(**/node_modules/**)
