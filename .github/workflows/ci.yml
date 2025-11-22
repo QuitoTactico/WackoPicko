@@ -61,7 +61,6 @@ jobs:
           args: >
             -Dsonar.projectKey=QuitoTactico_WackoPicko
             -Dsonar.organization=quitotactico
-            -Dsonar.qualitygate.wait=true
 
   docker-build-push:
     runs-on: ubuntu-latest
